@@ -1,9 +1,15 @@
 package Codes.Mini_Project;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 
 public class Control {
+    private static final double tax = 0.1;
+    private static final double insurance = 0.05;
     ArrayList<Employee> Emp_List ;
 
     public Control() {
@@ -139,5 +145,67 @@ public class Control {
                 System.out.println("❌ Hours and rate must be positive!");
             }
         }
+    }
+    void generateSlip(String Id){
+        if (check(Id)){
+            Employee temp = returnObj(Id);
+            slipgenerator(Id , temp);
+        }else {
+            System.out.print("Try Again");
+        }
+    }
+    void slipgenerator(String id, Employee temp){
+        LocalTime time = LocalTime.now();
+
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        String formatted = time.format(formatter);
+        LocalDate date = LocalDate.now();
+        System.out.println("══════════════════════════════════════════════════");
+        System.out.println("               SALARY SLIP - MONTHLY");
+        System.out.println("══════════════════════════════════════════════════");
+        System.out.println("\nEmployee Name   : " + temp.getName());
+        System.out.println("Employee Id     : " + temp.getId());
+        System.out.println("Employee Type   : " + temp.getType());
+        System.out.println("Status          : " + "Active");
+        System.out.println("\n══════════════════════════════════════════════════");
+        System.out.println("                  EARNING DETAILS");
+        System.out.println("══════════════════════════════════════════════════\n");
+        System.out.print("Monthly Salary  :               $");
+        System.out.printf("%.2f" , temp.calSalary());
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+        System.out.print("GROSS PAY       :               $");
+        System.out.printf("%.2f" , temp.calSalary());
+        System.out.println("\n══════════════════════════════════════════════════");
+        System.out.println("                  DEDUCTIONS");
+        System.out.println("══════════════════════════════════════════════════");
+        System.out.println();
+        double tax =  temp.calSalary()*Control.tax;
+        double ins = temp.calSalary()*Control.insurance;
+        double netSlaray =  temp.calSalary()-tax-ins;
+        System.out.print("Tax(10%)        :               $");
+        System.out.printf("%.2f" , tax);
+        System.out.println();
+        System.out.print("Insurance(10%)  :               $");
+        System.out.printf("%.2f" , ins);
+        System.out.println("\n--------------------------------------------------");
+        System.out.print("TOTAl DEDUCTION :               $" );
+        System.out.printf("%.2f" , (tax + ins));
+        System.out.println();
+        System.out.println("══════════════════════════════════════════════════");
+        System.out.println("                  NET PAY");
+        System.out.println("══════════════════════════════════════════════════\n");
+        System.out.print("NET SALARY      :               $");
+        System.out.printf("%.2f" , netSlaray);
+        System.out.println();
+        System.out.println("══════════════════════════════════════════════════");
+        System.out.println();
+        System.out.println("Generated On    : " + date + " " + formatted);
+        System.out.println("Status          : " + "PAID");
+        System.out.println("══════════════════════════════════════════════════");
+
+
     }
 }
